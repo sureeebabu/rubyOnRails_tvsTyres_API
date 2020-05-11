@@ -1,0 +1,7 @@
+rails new railsapi -d postgresql --skip-bundle
+gem 'active_model_serializers' 
+gem "devise"
+rails g devise:install
+rails g controller api/v1/Users index show edit create update delete
+rake db:create
+rake db:migrate
