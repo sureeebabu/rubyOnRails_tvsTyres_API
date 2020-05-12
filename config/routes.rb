@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :users, :only => [:index, :show, :create, :update, :delete]
+      # get 'users/mymethod'
       # get 'users/index'
       # get 'users/show'
       # get 'users/edit'

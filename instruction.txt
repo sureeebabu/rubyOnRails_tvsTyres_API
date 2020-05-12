@@ -7,3 +7,4 @@ rails g devise Modelname with singular
 rake db:create
 rake db:migrate
 -----------------
+rails g model Product name:string:index sku:string{10}:uniq count:integer description:text supplier:references popularity:float 'price:decimal{10,2}' available:boolean availableSince:datetime image:binary
