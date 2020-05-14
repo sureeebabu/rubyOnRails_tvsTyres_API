@@ -1,6 +1,7 @@
 class Api::V1::UsersController < ApplicationController
   respond_to :json
-
+  # skip_before_filter  :verify_authenticity_token
+  skip_before_action :verify_authenticity_token
   # def index
   #   result = User.all    
   #   # result = User.all               # Return All Record
@@ -37,6 +38,11 @@ class Api::V1::UsersController < ApplicationController
     end    
   end
 
+  def getdata
+    result = User.order('id') 
+    render json: { status: 'Success', isData: true , data: result }, status: 201 
+  end
+
 
   def show
     userID = params[:id]
@@ -52,11 +58,44 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def create
-  end
+    user = User.new(createuser_params) 
+    if user.save 
+      render json: { status: 'Success', msg: 'New User Added Successfully.'}
+     # render json: user, status: 201
+    else
+     render json: { errors: user.errors}, status: 422
+    end
+   end
+ 
 
   def update
+    user = User.find(params[:id])
+    if user.update_attributes(updateuser_params)
+      render json: { status: 'Success', msg: 'Update Successfully.'}
+    else
+      render json: { status: 'Failure', msg: 'Error .'}
+    end
   end
 
-  def delete
+  def destroy
+    user = User.find(params[:id])
+    if user.destroy
+      render json: { status: 'Success', msg: 'Deleted Successfully.'}
+    else
+      render json: { status: 'Failure', msg: 'Error .'}
+    end
   end
+  
+  
+  private
+
+  def createuser_params
+    params.require(:user).permit(:name, :email, :userimage, :isactive, :password, :password_confirmation)
+  end
+
+  def updateuser_params
+    params.require(:user).permit(:name, :email, :userimage, :isactive)
+  end
+ 
+
 end
