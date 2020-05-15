@@ -1,10 +1,19 @@
 Rails.application.routes.draw do
+  namespace :api do
+    namespace :v1 do
+      get 'userdetails/index'
+    end
+  end
   devise_for :users
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       # resources :users, :only => [:index, :show, :create, :update, :delete]
-      resources :users, :only => [:index, :show, :create, :update, :destroy, :getdata]
-      # get 'users/mymethod'
+      resources :users, :only => [:index, :show, :create, :update, :destroy]
+
+      get '/mymethod', to: 'users#mymethod'
+      get '/getdatabyid/:id', to: 'users#getdatabyid'
+      
+      #get 'users/mymethod'
       # get 'users/index'
       # get 'users/show'
       # get 'users/edit'
