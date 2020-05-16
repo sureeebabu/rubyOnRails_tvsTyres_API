@@ -31,8 +31,12 @@ class Api::V1::UsersController < ApplicationController
       # result = result.map{|e| e[:isactive] = ApplicationController.chkIsActive((e[:isactive])); e}
       # render json: { status: 'Success', isData: true, data: result.as_json(only: [:id, :name, :email], methods: [:name]) }, status: 201
 
-      jsonformat = result.as_json(include: :userdetails)
+      #jsonformat = result.as_json(methods: :userdetails)
 
+      
+      #jsonformat = result.as_json(include: :userdetails, except: [:created_at, :updated_at]) # remove Dates from user table
+      
+      jsonformat = result.as_json(:except => [:created_at, :updated_at], :include => { :userdetails => { :except => [:created_at, :updated_at]} }) # remove Dates from both user and userdetails
       render json: { status: 'Success', isData: true , data: jsonformat }, status: 201 
 
       #render json: { status: 'Success', isData: true , data: result }, status: 201 
@@ -69,7 +73,9 @@ class Api::V1::UsersController < ApplicationController
     userID = params[:id]
     if User.exists?(userID)
       result = User.find(userID)
-      render json: { status: 'Success', isData: true , data: [result]}
+      jsonformat = result.as_json(:except => [:created_at, :updated_at], :include => { :userdetails => { :except => [:created_at, :updated_at]} }) # remove Dates from both user and userdetails
+      render json: { status: 'Success', isData: true , data: jsonformat }, status: 201 
+      #render json: { status: 'Success', isData: true , data: [result]}
     else
       render json: { status: 'NoRecord',isData: false, data: []},status: 201   
     end
