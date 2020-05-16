@@ -55,18 +55,6 @@ class Api::V1::UsersController < ApplicationController
     # end
 
   end
- 
-
-  def mymethod
-    result = User.select('id, email')
-    render json: { status: 'Success', data: result}
-  end
-
-  def getdatabyid
-    id = params[:id]
-    result = User.find(id)
-    render json: { status: 'Success', isData: true , data: [result]}
-  end
 
 
   def show
@@ -79,11 +67,6 @@ class Api::V1::UsersController < ApplicationController
     else
       render json: { status: 'NoRecord',isData: false, data: []},status: 201   
     end
-  end
-
-
-  
-  def edit
   end
 
   def create
