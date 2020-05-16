@@ -12,3 +12,14 @@ rails g model Product name:string:index sku:string{10}:uniq count:integer descri
 rails g scaffold User username:string{50} useremail:string{50} userpassword:string{20} isactive:boolean
 
 rails g model User username:string{50} useremail:string{50} userpassword:string{20} isactive:boolean
+
+----------------------
+create_table :posts do |t|
+      t.text :body
+      t.references :shark, foreign_key: true
+
+      t.timestamps
+    end
+------------------------
+Json Formation
+https://api.rubyonrails.org/classes/ActiveModel/Serializers/JSON.html

@@ -25,18 +25,21 @@ class Api::V1::UsersController < ApplicationController
   #   end    
   # end
   def index
-    result = User.order('id') 
+    result = User.order('id desc') 
     if result.exists?
       # result = result.map{|e| e[:created_at] = e[:created_at].to_date.strftime("%d %B %Y"); e}
-      result = result.map{|e| e[:isactive] = ApplicationController.chkIsActive((e[:isactive])); e}
-      render json: { status: 'Success', isData: true , data: result }, status: 201 
+      # result = result.map{|e| e[:isactive] = ApplicationController.chkIsActive((e[:isactive])); e}
+      # render json: { status: 'Success', isData: true, data: result.as_json(only: [:id, :name, :email], methods: [:name]) }, status: 201
+
+      jsonformat = result.as_json(include: :userdetails)
+
+      render json: { status: 'Success', isData: true , data: jsonformat }, status: 201 
+
+      #render json: { status: 'Success', isData: true , data: result }, status: 201 
     else
       render json: { status: 'NoRecord',isData: false, data: []},status: 201   
     end    
-
-
-    # @result = User.joins(:userdetails).select('id', 'name', 'email')
-    
+    # @result = User.joins(:userdetails).select('id', 'name', 'email')    
     # respond_to do |format|
     #   format.json { 
     #     render :json => @result.to_json( 
